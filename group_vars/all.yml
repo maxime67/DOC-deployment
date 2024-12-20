@@ -5,6 +5,6 @@ vue_app_group: www-data
 vue_app_root: /var/www/{{ app_name }}
 nodejs_version: 20
 domain_name: easysetup.fr
-git_branch: master
+git_branch: main
 
 database_port: 27017
