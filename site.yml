@@ -10,4 +10,5 @@
       when: ansible_os_family == "Debian"
 
   tasks:
-    import_playbook: playbooks/deploy_database.yml
+    - name: deploy Database
+      import_playbook: playbooks/deploy_database.yml
