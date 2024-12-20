@@ -78,7 +78,7 @@
   when: inventory_hostname == 'api-admin'
 
 - name: Install pm2
-  ansible.builtin.shell: npm i pm2
+  ansible.builtin.shell: npm i pm2 -g
   args:
     chdir: "{{ app_root }}"
 
