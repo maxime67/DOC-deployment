@@ -3,7 +3,7 @@
   apt:
     name:
     - gnupg
-    - libssl3
+    - libssl
     state: present
 
 - name: Add MongoDB GPG key
