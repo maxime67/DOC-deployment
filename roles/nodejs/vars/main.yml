@@ -1,4 +1,6 @@
 ---
+app_user: root
+app_group: root
 app_name: nodejs-app
 app_root: /home/{{ app_name }}
 vue_app_root: /var/www/{{ app_name }}
