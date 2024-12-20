@@ -25,6 +25,14 @@
     state: present
     update_cache: yes
 
+- name: Remove application directory
+  file:
+    path: "{{ app_root }}"
+    state: absent
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0755'
+
 - name: Create application directory
   file:
     path: "{{ app_root }}"
