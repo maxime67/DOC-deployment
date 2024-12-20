@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         // Repository and deployment variables
-        ANSIBLE_INVENTORY = 'ansible/inventory/hosts.yml'
-        ANSIBLE_SITE_YML_PATH = "ansible/site.yml"
+        ANSIBLE_INVENTORY = 'inventory/hosts.yml'
+        ANSIBLE_SITE_YML_PATH = "site.yml"
     }
 
     stages {
