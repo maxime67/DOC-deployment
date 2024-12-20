@@ -33,7 +33,7 @@
     group: "{{ app_group }}"
     mode: '0755'
 
-- name: Clone NodeJs repository
+- name: Clone NodeJs repository for user
   git:
     repo: "{{ repository_url_user }}"
     dest: "{{ app_root }}"
@@ -42,7 +42,7 @@
   become_user: "{{ app_user }}"
   when: inventory_hostname == 'api-user'
 
-- name: Clone NodeJs repository
+- name: Clone NodeJs repository for admin
   git:
     repo: "{{ repository_url_admin }}"
     dest: "{{ app_root }}"
@@ -82,10 +82,41 @@
   args:
     chdir: "{{ app_root }}"
 
-- name: Install dependancies
-  ansible.builtin.shell: npm i
+- name: Ensure certbot is installed
+  package:
+    name: certbot
+    state: present
+
+- name: Generate SSL certificate using certbot
+  command: >
+    certbot certonly --standalone --agree-tos --no-eff-email
+    --email maxime.heim3@gmail.com
+    --domain easysetup.fr
+  register: certbot_output
   args:
-    chdir: "{{ app_root }}"
+    creates: /etc/letsencrypt/live/easysetup.fr/fullchain.pem
+
+- name: Copy private key to the desired location
+  copy:
+    src: /etc/letsencrypt/live/easysetup.fr/privkey.pem
+    dest: /root/nodejs-app/certificates/privkey.pem
+    mode: '0600'
+
+- name: Copy fullchain certificate to the desired location
+  copy:
+    src: /etc/letsencrypt/live/easysetup.fr/fullchain.pem
+    dest: /root/nodejs-app/certificates/fullchain.pem
+    mode: '0600'
+
+- name: Ensure ownership of the certificate files
+  file:
+    path: "/root/nodejs-app/certificates/{{ item }}"
+    owner: root
+    group: root
+    mode: '0600'
+  loop:
+    - privkey.pem
+    - fullchain.pem
 
 - name: Start app using pm2
   ansible.builtin.shell: pm2 start bin/www -f
