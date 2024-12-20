@@ -1,58 +1,8 @@
 ---
-# Task to uninstall MongoDB
-- name: Check if MongoDB is installed
-  command: dpkg-query -W mongodb-org
-  register: mongodb_installed
-  failed_when: mongodb_installed.rc > 1
-  changed_when: false
-
-- name: Remove MongoDB if installed
-  apt:
-    name: "{{ item }}"
-    state: absent
-    purge: yes
-  loop:
-    - mongodb-org
-    - mongodb-org-server
-    - mongodb-org-shell
-    - mongodb-org-mongos
-    - mongodb-org-tools
-  when: mongodb_installed.rc == 0
-
-- name: Remove MongoDB configuration and data directories
-  file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - /etc/mongod.conf
-    - /var/lib/mongodb
-    - /var/log/mongodb
-
-- name: Install MongoDB package
+- name: Install MongoDB
   apt:
     name:
-    - gnupg
-    state: present
-
-- name: Add MongoDB GPG key
-  apt_key:
-    url: https://www.mongodb.org/static/pgp/server-4.4.asc
-    state: present
-
-- name: Add MongoDB APT repository
-  apt_repository:
-    repo: "deb [arch=amd64] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse"
-    state: present
-
-- name: Update apt cache
-  apt:
-    update_cache: yes
-
-- name: Install MongoDB package
-  apt:
-    name:
-    - mongodb-org
-    - mongodb-mongosh
+      - mongodb-org
     state: present
 
 - name: Ensure mongod user exists
@@ -70,29 +20,18 @@
     mode: '0644'
   notify: Restart MongoDB
 
-- name: Ensure MongoDB service is enabled and started
-  systemd:
+- name: Create MongoDB database using shell command
+  shell: |
+    mongosh --eval 'use documentation' --quiet
+
+- name: Verify database creation
+  shell: |
+    mongosh --eval 'show dbs' --quiet
+  register: show_dbs
+  changed_when: false
+
+- name: Start and enable MongoDB service
+  ansible.builtin.service:
     name: mongod
     state: started
     enabled: yes
-
-- name: Create a MongoDB database
-  block:
-    - name: Create a MongoDB script for database creation
-      copy:
-        content: |
-          use documentation
-          db.createCollection("init_collection")
-        dest: /tmp/mongodb_create_db.js
-        owner: root
-        group: root
-        mode: '0644'
-
-    - name: Run the MongoDB database creation script
-      command: "mongosh < /tmp/mongodb_create_db.js"
-      register: mongodb_db_creation
-
-    - name: Remove temporary database creation script
-      file:
-        path: /tmp/mongodb_create_db.js
-        state: absent
