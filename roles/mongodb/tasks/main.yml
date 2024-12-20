@@ -21,14 +21,15 @@
 
 - name: Install MongoDB package
   apt:
-    name: mongodb-org
+    name:
+    - mongodb-org
+    - mongodb-mongosh
     state: present
 
 - name: Ensure mongod user exists
   user:
     name:
     - mongod
-    - mongodb-mongosh
     state: present
     system: yes
 
