@@ -93,6 +93,11 @@
   args:
     chdir: "{{ app_root }}"
 
+- name: kill the process if listen on port 3000
+  ansible.builtin.shell: kill -9 $(lsof -t -i:3000) 2>/dev/null && echo "Process on port 3000 killed" || echo "No process found on port 3000"
+  args:
+    chdir: "{{ app_root }}"
+
 - name: Remove existing app for port conflict
   ansible.builtin.shell: pm2 delete all
   args:
