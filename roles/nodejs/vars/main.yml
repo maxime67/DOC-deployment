@@ -1,5 +1,6 @@
 ---
-repository_url: https://github.com/maxime67/DocumentationApi
+repository_url_admin: https://github.com/maxime67/DocumentationApiAdmin
+repository_url_user: https://github.com/maxime67/DocumentationApi
 app_user: root
 app_group: root
 app_name: nodejs-app

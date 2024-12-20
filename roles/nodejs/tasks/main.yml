@@ -35,11 +35,21 @@
 
 - name: Clone NodeJs repository
   git:
-    repo: "{{ repository_url }}"
+    repo: "{{ repository_url_user }}"
     dest: "{{ app_root }}"
     version: "{{ git_branch | default('main') }}"
     force: true
   become_user: "{{ app_user }}"
+  when: inventory_hostname == 'api-user'
+
+- name: Clone NodeJs repository
+  git:
+    repo: "{{ repository_url_admin }}"
+    dest: "{{ app_root }}"
+    version: "{{ git_branch | default('main') }}"
+    force: true
+  become_user: "{{ app_user }}"
+  when: inventory_hostname == 'api-admin'
 
 - name: Install npm dependencies
   npm:
