@@ -8,6 +8,6 @@
       apt:
         update_cache: yes
       when: ansible_os_family == "Debian"
-- roles:
+  roles:
     - cleanup
 - import_playbook: playbooks/deploy_database.yml
