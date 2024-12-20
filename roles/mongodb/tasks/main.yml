@@ -42,6 +42,8 @@
 - name: Create MongoDB database using cmd module
   command:
     cmd: mongosh --eval "use {{ database_name }}" --quiet
+  vars:
+    database_name: "{{ database_name }}"
 
 
 - name: Create MongoDB database using cmd module
