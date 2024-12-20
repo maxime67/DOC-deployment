@@ -3,4 +3,4 @@
   hosts: api
   become: yes
   roles:
-    - nodejs
+    - roles/nodejs
