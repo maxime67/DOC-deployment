@@ -57,16 +57,33 @@
     state: present
   become_user: "{{ app_user }}"
 
-- name: Create environment files
+- name: Create environment files for user
   template:
-    src: env.j2
+    src: env.user.j2
     dest: "{{ app_root }}/.env"
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
     mode: '0644'
+  become_user: "{{ app_user }}"
+  when: inventory_hostname == 'api-user'
+
+- name: Create environment files for admin
+  template:
+    src: env.admin.j2
+    dest: "{{ app_root }}/.env"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0644'
+  become_user: "{{ app_user }}"
+  when: inventory_hostname == 'api-admin'
 
 - name: Install pm2
   ansible.builtin.shell: npm i pm2
+  args:
+    chdir: "{{ app_root }}"
+
+- name: Install dependancies
+  ansible.builtin.shell: npm i
   args:
     chdir: "{{ app_root }}"
 
