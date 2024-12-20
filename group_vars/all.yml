@@ -7,5 +7,4 @@ nodejs_version: 20
 domain_name: easysetup.fr
 git_branch: master
 
-database_port: "27017"
-
+database_port: 27017
