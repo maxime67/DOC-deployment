@@ -96,4 +96,3 @@
       file:
         path: /tmp/mongodb_create_db.js
         state: absent
-  when: mongodb_database is defined
