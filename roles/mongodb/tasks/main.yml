@@ -1,7 +1,7 @@
 ---
 - name: Install MongoDB package
   apt:
-    name: gnugpg
+    name: gnupg
     state: present
 
 - name: Add MongoDB GPG key
