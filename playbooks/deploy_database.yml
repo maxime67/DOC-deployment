@@ -3,4 +3,4 @@
   hosts: database
   become: yes
   roles:
-    - mongodb
+    - roles/mongodb
