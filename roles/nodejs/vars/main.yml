@@ -1,2 +1,5 @@
-repository_url: https://github.com/maxime67/DocumentationApi
+---
+vue_app_root: /var/www/{{ app_name }}
+nodejs_version: 20
+domain_name: easysetup.fr
 database_url: mongodb://readonly_user:jK9%23mP2%24vL5%40nR8%26xQ4%2AhW7%5EcF3%21tY6%25bN1%7EdM5%3FsG9%2BpE4%2FaU8%3DvB2@192.168.1.22:27017/?tls=false
