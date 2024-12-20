@@ -1,2 +1,0 @@
-repository_url: https://github.com/maxime67/DocumentationApiAdmin
-databse_url : mongodb://adminUser:securePassword@192.168.1.22:27017/?tls=false

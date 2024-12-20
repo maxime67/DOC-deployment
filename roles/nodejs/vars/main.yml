@@ -4,7 +4,7 @@ repository_url_user: https://github.com/maxime67/DocumentationApi
 app_user: root
 app_group: root
 app_name: nodejs-app
-git_branch: master
+git_branch: main
 app_root: /home/{{ app_name }}
 vue_app_root: /var/www/{{ app_name }}
 nodejs_version: 20
