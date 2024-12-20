@@ -1,5 +1,5 @@
 ---
-- name: Deploy VueJS Application
+- name: Deploy Documentation Applications
   hosts: all
   become: yes
   
