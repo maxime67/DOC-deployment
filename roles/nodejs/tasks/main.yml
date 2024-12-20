@@ -94,7 +94,7 @@
     chdir: "{{ app_root }}"
 
 - name: Remove existing app for port conflict
-  ansible.builtin.shell: pm2 remove all
+  ansible.builtin.shell: pm2 delete all
   args:
     chdir: "{{ app_root }}"
 
