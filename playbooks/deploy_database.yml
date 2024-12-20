@@ -1,0 +1,6 @@
+---
+- name: Deploy VueJS application
+  hosts: database
+  become: yes
+  roles:
+    - mongodb

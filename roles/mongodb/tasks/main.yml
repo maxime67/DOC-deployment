@@ -1,0 +1,36 @@
+---
+- name: Install MongoDB
+  apt:
+    name: mongodb-org
+    state: present
+
+- name: Ensure mongod user exists
+  user:
+    name: mongod
+    state: present
+    system: yes
+
+- name: Create environment files
+  template:
+    src: mongod.conf.j2
+    dest: /etc/mongod.conf
+    owner: mongod
+    group: mongod
+    mode: '0644'
+  notify: Restart MongoDB
+
+- name: Create MongoDB database using cmd module
+  command:
+    cmd: mongosh --eval "use {{ database_name }}" --quiet
+
+
+- name: Create MongoDB database using cmd module
+  command:
+    cmd: mongosh --eval 'show dbs' --quiet
+
+
+- name: Start and enable MongoDB service
+  ansible.builtin.service:
+    name: mongod
+    state: started
+    enabled: yes

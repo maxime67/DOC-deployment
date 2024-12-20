@@ -1,0 +1,6 @@
+---
+- name: Deploy VueJS application
+  hosts: all
+  become: yes
+  roles:
+    - nodejs

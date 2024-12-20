@@ -1,0 +1,13 @@
+---
+- name: Deploy VueJS Application
+  hosts: all
+  become: yes
+  
+  pre_tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+  tasks:
+    import_playbook: playbooks/deploy_database.yml
