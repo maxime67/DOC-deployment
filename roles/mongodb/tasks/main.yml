@@ -1,4 +1,33 @@
 ---
+# Task to uninstall MongoDB
+- name: Check if MongoDB is installed
+  command: dpkg-query -W mongodb-org
+  register: mongodb_installed
+  failed_when: mongodb_installed.rc > 1
+  changed_when: false
+
+- name: Remove MongoDB if installed
+  apt:
+    name: "{{ item }}"
+    state: absent
+    purge: yes
+  loop:
+    - mongodb-org
+    - mongodb-org-server
+    - mongodb-org-shell
+    - mongodb-org-mongos
+    - mongodb-org-tools
+  when: mongodb_installed.rc == 0
+
+- name: Remove MongoDB configuration and data directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/mongod.conf
+    - /var/lib/mongodb
+    - /var/log/mongodb
+
 - name: Install MongoDB package
   apt:
     name:
@@ -41,22 +70,30 @@
     mode: '0644'
   notify: Restart MongoDB
 
-- name: Start and enable MongoDB service
-  ansible.builtin.service:
+- name: Ensure MongoDB service is enabled and started
+  systemd:
     name: mongod
     state: started
     enabled: yes
 
-- name: Create MongoDB database using cmd module
-  command:
-    cmd: mongosh --eval "use documentation" --quiet
+- name: Create a MongoDB database
+  block:
+    - name: Create a MongoDB script for database creation
+      copy:
+        content: |
+          use documentation
+          db.createCollection("init_collection")
+        dest: /tmp/mongodb_create_db.js
+        owner: root
+        group: root
+        mode: '0644'
 
-- name: Create MongoDB database using cmd module
-  command:
-    cmd: mongosh --eval 'show dbs' --quiet
+    - name: Run the MongoDB database creation script
+      command: "mongosh < /tmp/mongodb_create_db.js"
+      register: mongodb_db_creation
 
-- name: Start and enable MongoDB service
-  ansible.builtin.service:
-    name: mongod
-    state: started
-    enabled: yes
+    - name: Remove temporary database creation script
+      file:
+        path: /tmp/mongodb_create_db.js
+        state: absent
+  when: mongodb_database is defined
