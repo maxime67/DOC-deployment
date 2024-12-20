@@ -77,8 +77,8 @@
   become_user: "{{ app_user }}"
   when: inventory_hostname == 'api-admin'
 
-- name: Setup key and cert for ssl
-  import_tasks: ssl.yml
+#- name: Setup key and cert for ssl
+#  import_tasks: ssl.yml
 
 - name: Install pm2
   ansible.builtin.shell: npm i pm2 -g
