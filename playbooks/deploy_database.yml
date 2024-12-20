@@ -1,5 +1,5 @@
 ---
-- name: Deploy VueJS application
+- name: Deploy MongoDB
   hosts: database
   become: yes
   gather_facts: yes
