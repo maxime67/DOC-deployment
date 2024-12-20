@@ -41,6 +41,12 @@
     mode: '0644'
   notify: Restart MongoDB
 
+- name: Start and enable MongoDB service
+  ansible.builtin.service:
+    name: mongod
+    state: started
+    enabled: yes
+
 - name: Create MongoDB database using cmd module
   command:
     cmd: mongosh --eval "use documentation" --quiet
@@ -48,7 +54,6 @@
 - name: Create MongoDB database using cmd module
   command:
     cmd: mongosh --eval 'show dbs' --quiet
-
 
 - name: Start and enable MongoDB service
   ansible.builtin.service:
