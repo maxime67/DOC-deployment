@@ -10,4 +10,4 @@
       when: ansible_os_family == "Debian"
   roles:
     - cleanup
-- import_playbook: playbooks/deploy_database.yml
+- import_playbook: playbooks/deploy_api.yml
