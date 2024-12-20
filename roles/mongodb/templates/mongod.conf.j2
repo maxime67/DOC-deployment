@@ -11,7 +11,9 @@ systemLog:
 net:
   bindIp: "127.0.0.1,{{ groups['front'] | map('extract', hostvars, ['ansible_host']) | join(',') }}"
   port: {{ database_port }}
+
 processManagement:
+  fork: true
   timeZoneInfo: /usr/share/zoneinfo
 
 
