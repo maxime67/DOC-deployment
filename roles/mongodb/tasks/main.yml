@@ -1,4 +1,9 @@
 ---
+- name: Install MongoDB package
+  apt:
+    name: gnugpg
+    state: present
+
 - name: Add MongoDB GPG key
   apt_key:
     url: https://www.mongodb.org/static/pgp/server-4.4.asc
