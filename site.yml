@@ -9,6 +9,4 @@
         update_cache: yes
       when: ansible_os_family == "Debian"
 
-  tasks:
-    - name: deploy Database
-      import_playbook: playbooks/deploy_database.yml
+- import_playbook: playbooks/deploy_database.yml
